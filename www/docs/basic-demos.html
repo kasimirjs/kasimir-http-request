@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kasimir Templates :: Template instanciation</title>
+    <link rel="stylesheet" href="/dist/docs.css">
+    <link rel="stylesheet" href="/dist/bootstrap.css">
+    <script type="application/javascript" src="/dist/w3codecolor.js"></script>
+    <script type="application/javascript" src="/dist/kasimir-http-request.js"></script>
+    <script type="application/javascript" src="/dist/kasimir-tpl.js"></script>
+</head>
+<body class="container">
+
+    <h2>Basic demos</h2>
+    <h3>Run ajax request and display it</h3>
+    <div id="ex01" class="example">
+        <pre id="result"></pre>
+        <script>
+            ka_http_req("/docs/_include.html").plain = (res) => document.getElementById("result").innerText = res;
+        </script>
+    </div>
+    <pre class="code"><ka-val stmt="document.getElementById('ex01').innerHTML" unindent auto afterrender="w3codecolor(this)"></ka-val></pre>
+
+    <h3>On the fly parse result as json</h3>
+    <div id="ex02" class="example">
+        <pre id="result2"></pre>
+        <script>
+            ka_http_req("/docs/_include.json").json = (res) => document.getElementById("result2").innerText = JSON.stringify(res);
+        </script>
+    </div>
+    <pre class="code"><ka-val stmt="document.getElementById('ex02').innerHTML" unindent auto afterrender="w3codecolor(this)"></ka-val></pre>
+
+
+
+
+</body>
+</html>
