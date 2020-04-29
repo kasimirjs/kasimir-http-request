@@ -17,6 +17,7 @@ class KasimirHttpRequest {
             headers: {},
             dataType: "text",
             onError: null,
+            debug: false,
             data: null
         };
 
@@ -104,6 +105,17 @@ class KasimirHttpRequest {
         return this;
     }
 
+    /**
+     * Switch debug mode on. Errors will trigger
+     * a message and a alert window.
+     *
+     * @return {KasimirHttpRequest}
+     */
+    withDebug() {
+        this.request.debug = true;
+        return this;
+    }
+
     set json(fn) {
         this.send((res) => {
             fn(res.getBodyJson());
@@ -132,9 +144,22 @@ class KasimirHttpRequest {
         }
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState === 4) {
-                console.log("ok", xhttp);
-                if (this.request.onError !== null && xhttp.status >= 400) {
-                    this.request.onError(new KasimirHttpResponse(xhttp.response, xhttp.status, this));
+
+                if (this.request.onError !== null || parseInt(xhttp.status) >= 400) {
+                    let errMsg = `𝗥𝗲𝗾𝘂𝗲𝘀𝘁 𝗳𝗮𝗶𝗹𝗲𝗱 '${xhttp.status} ${xhttp.statusText}':`;
+                    let errData = xhttp.response;
+                    try {
+                        errData = JSON.parse(errData);
+                        errMsg += "\n\n𝗠𝘀𝗴: '" + errData.error.msg + "'\n\n"
+                    } catch (e) {
+                        errMsg += errData;
+                    }
+
+                    console.warn(errMsg, errData);
+                    if (this.request.debug)
+                        alert(errMsg + "\n𝘴𝘦𝘦 𝘤𝘰𝘯𝘴𝘰𝘭𝘦 𝘧𝘰𝘳 𝘥𝘦𝘵𝘢𝘪𝘭𝘴. (𝘥𝘦𝘣𝘶𝘨 𝘮𝘰𝘥𝘦 𝘰𝘯)");
+                    if (typeof this.request.onError === "function")
+                        this.request.onError(new KasimirHttpResponse(xhttp.response, xhttp.status, this));
                     return;
                 }
                 onSuccessFn(new KasimirHttpResponse(xhttp.response, xhttp.status, this));
