@@ -4,7 +4,7 @@ class KasimirHttpRequest {
 
     constructor(url, params={}) {
 
-        url = url.replace(/(\{|\:)([a-zA-Z0-9_\-]+)/, (match, p1, p2) => {
+        url = url.replace(/(\{|\:)([a-zA-Z0-9_\-]+)/g, (match, p1, p2) => {
             if ( ! params.hasOwnProperty(p2))
                 throw "parameter '" + p2 + "' missing in url '" + url + "'";
             return encodeURI(params[p2]);
@@ -162,6 +162,17 @@ class KasimirHttpRequest {
                         this.request.onError(new KasimirHttpResponse(xhttp.response, xhttp.status, this));
                     return;
                 }
+
+                if (this.request.debug) {
+                    let msg = xhttp.response;
+                    try {
+                        msg = JSON.parse(msg);
+                    } catch (e) {
+                        // cannot parse json - output plain
+                    }
+                    console.debug(`𝗥𝗲𝗾𝘂𝗲𝘀𝘁: ${xhttp.status} ${xhttp.statusText}':\n`, msg);
+                }
+
                 onSuccessFn(new KasimirHttpResponse(xhttp.response, xhttp.status, this));
                 return;
             }
