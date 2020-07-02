@@ -31,6 +31,14 @@
     <pre class="code"><ka-val stmt="document.getElementById('ex02').innerHTML" unindent auto afterrender="w3codecolor(this)"></ka-val></pre>
 
 
+    <h3>Error handling</h3>
+    <div id="ex03" class="example">
+        <pre id="result3"></pre>
+        <script>
+            ka_http_req("/docs/nopage.json").withOnError((e) => document.getElementById("result3").innerText = JSON.stringify(e)).json = (res) => document.getElementById("result2").innerText = JSON.stringify(res);
+        </script>
+    </div>
+    <pre class="code"><ka-val stmt="document.getElementById('ex03').innerHTML" unindent auto afterrender="w3codecolor(this)"></ka-val></pre>
 
 
 </body>

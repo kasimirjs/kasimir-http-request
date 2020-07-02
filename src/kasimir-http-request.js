@@ -145,7 +145,7 @@ class KasimirHttpRequest {
         xhttp.onreadystatechange = () => {
             if (xhttp.readyState === 4) {
 
-                if (this.request.onError !== null || parseInt(xhttp.status) >= 400) {
+                if (parseInt(xhttp.status) >= 400) {
                     let errMsg = `𝗥𝗲𝗾𝘂𝗲𝘀𝘁 𝗳𝗮𝗶𝗹𝗲𝗱 '${xhttp.status} ${xhttp.statusText}':`;
                     let errData = xhttp.response;
                     try {
